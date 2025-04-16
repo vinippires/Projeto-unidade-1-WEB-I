@@ -1,0 +1,95 @@
+* {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    flex-direction: column;
+    background-color: #000;
+  }
+
+  .Background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-image: url(../img/fundo-login-screen.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: blur(15px);
+  }
+
+  .Container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .Login-Container {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    position: absolute;
+    width: 400px;
+    height: 60%;
+    min-height: fit-content;
+    max-height: 1000px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    filter: opacity(0.94);
+    padding: 10px;
+    padding-bottom: 30px;
+  }
+
+  h1 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #205781;
+    margin-bottom: 20px;
+  }
+
+  input[type="email"],
+  input[type="text"],
+  input[type="number"],
+  input[type="password"] {
+    width: 320px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+  }
+
+  .Container a{
+    text-decoration: none;
+    color: #205781;
+    font-size: 14px;
+    margin-top: 26px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  #Login-Button {
+    width: 50%;
+    display: block;
+    margin: 20px auto 0 auto;
+    padding: 12px;
+    background-color: #205781;
+    border: solid 1px #205781;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+
