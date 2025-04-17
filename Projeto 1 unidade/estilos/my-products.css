@@ -1,0 +1,67 @@
+#header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+main {
+    padding-top: 74px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+main {
+    display: flex;
+}
+
+.container {
+    margin: none;
+}
+
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e0e0e0;
+    padding: 20px;
+    margin: 5px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.side-menu h2 {
+    font-size: 20px;
+    margin: 0 auto;
+    color: #333;
+}
+
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.side-menu a {
+    text-decoration: none;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.side-menu a:hover {
+    color: #ffa500;
+}
+.side-menu a.active {
+    color: #ffa500;
+    font-weight: bold;
+}
