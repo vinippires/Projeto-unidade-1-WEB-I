@@ -66,7 +66,7 @@
 
 .frete:focus{
     outline: none;
-    border: solid 2px #D68500;
+    box-shadow: 0 0 0 2px #D68500;
 }
 
 .pequeno{
