@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Meus Produtos</title>
         <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
-        <link rel="stylesheet" href="../estilos/my-products.css">
         <link rel="stylesheet" href="../estilos/global.css">
+        <link rel="stylesheet" href="../estilos/my-products.css">
     </head>
     <body>
         <div id="header">
@@ -19,7 +19,7 @@
               <a href="#">Contato</a>
             </div>
             <div class="user-info">
-              <img src="../img/user.jpg" alt="user-img" class="user-img">
+              <img src="../img/user-solid.svg" alt="user-img" class="user-img">
               <p>Nome do Usuário</p>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <li><a href="../paginas/main-page.html">Página Inicial</a></li>
                     <li><a href="#">Meus Produtos</a></li>
                     <li><a href="#">Perfil</a></li>
-                    <li><a href="#">Adicionar Produto</a></li>
+                    <li><a href="#">Loja</a></li>
                     <li><a href="#">Mensagens</a></li>
                     <li><a href="#">Notificações</a></li>
                     <li><a href="#">Meus Pedidos</a></li>
@@ -42,32 +42,55 @@
             </div>
 
             <div class="container">
-                <h2>Meus Produtos</h2>
+                <div class="sub-header">
+                    <h2>Meus Produtos</h2>
+                    <a href="#">
+                        <div class="add-product">
+                            <img src="../img/add-circle-svgrepo-com.svg" alt="Add-ico">Produto
+                        </div>
+                    </a>
+                </div>
                 <div class="product-list">
                     <div class="product-item">
                         <img src="https://placehold.co/150x150/png" alt="Produto 1">
-                        <h3>Produto 1</h3>
-                        <p class="price">R$ 100,00</p>
+                        <div class="product-detail">
+                            <h3>Produto 1</h3>
+                            <p class="price">R$ 100,00</p>
+                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
+                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
+                        </div>
                     </div>
                     <div class="product-item">
                         <img src="https://placehold.co/150x150/png" alt="Produto 2">
-                        <h3>Produto 2</h3>
-                        <p class="price">R$ 85,00</p>
+                        <div class="product-detail">
+                            <h3>Produto 2</h3>
+                            <p class="price">R$ 85,00</p>
+                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
+                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
+                        </div>
                     </div>
                     <div class="product-item">
                         <img src="https://placehold.co/150x150/png" alt="Produto 3">
-                        <h3>Produto 3</h3>
-                        <p class="price">R$ 70,00</p>
+                        <div class="product-detail">
+                            <h3>Produto 3</h3>
+                            <p class="price">R$ 70,00</p>
+                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
+                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
+                        </div>
                     </div>
-                        <div class="product-item">
-                            <img src="https://placehold.co/150x150/png" alt="Produto 4">
+                    <div class="product-item">
+                        <img src="https://placehold.co/150x150/png" alt="Produto 4">
+                        <div class="product-detail">
                             <h3>Produto 4</h3>
                             <p class="price">R$ 120,00</p>
+                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
+                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
+                        </div>
                     </div>
+                    
                 </div>
+                
             </div>
-
-            
         </main>
     </body>
 </html>
