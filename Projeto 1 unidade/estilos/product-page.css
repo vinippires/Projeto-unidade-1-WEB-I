@@ -126,6 +126,22 @@ hr{
     width: 25px;
 }
 
+.detalhes{
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tabela-detalhes{
+    text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-detalhes th, tr, td{
+    width: 50%;
+}
+
 @media (max-width: 600px){
     .anuncio {
       min-width: 300px;
