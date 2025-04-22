@@ -75,7 +75,9 @@ main {
 }
 
 .container {
-    margin: 10px auto;
+    margin: 10px 50px;
+    width: 100%;
+    max-width: none;
     padding: 10px 30px;
 }
 
