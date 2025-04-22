@@ -6,19 +6,37 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" href="../estilos/main.css" />
   <link rel="stylesheet" href="../estilos/global.css" />
+  <link rel="stylesheet" href="../estilos/spikes.css" />
   <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
   <title>MainPage 📦</title>
+<style>
+  .product-item a{
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+</style>
 </head>
 
 <body>
   <div id="header">
     <div class="logo">
-      <img src="../img/logo.png" alt="Logo">
+      <a href="../paginas/main-page.html">
+        <img src="../img/logo.png" alt="Logo">
+      </a>
     </div>
     <div class="menu">
-      <a href="#">Home</a>
-      <a href="#">Sobre</a>
-      <a href="#">Contato</a>
+      <a href="main-page.html">Home</a>
+      <a href="notFound-page.html">Sobre</a>
+      <a href="notFound-page.html">Contato</a>
     </div>
     <div class="login_register">
       <a href="../paginas/login-page.html">Login</a>
@@ -41,46 +59,76 @@
   <div class="container">
     <h2>Produtos em Destaque</h2>
     <div class="product-list">
+    
       <div class="product-item">
-        <img src="https://placehold.co/150x150/png" alt="Produto 1">
-        <h3>Produto 1</h3>
-        <p class="price">R$ 100,00</p>
+        <a href="../paginas/product-page.html">
+          <img src="https://placehold.co/150x150/png" alt="Produto 1">
+          <h3>Produto 1</h3>
+          <p class="price">R$ 100,00</p>
+        </a>
       </div>
       <div class="product-item">
-        <img src="https://placehold.co/150x150/png" alt="Produto 2">
-        <h3>Produto 2</h3>
-        <p class="price">R$ 85,00</p>
+        <a href="../paginas/product-page.html">
+          <img src="https://placehold.co/150x150/png" alt="Produto 2">
+          <h3>Produto 2</h3>
+          <p class="price">R$ 85,00</p>
+        </a>
       </div>
       <div class="product-item">
-        <img src="https://placehold.co/150x150/png" alt="Produto 3">
-        <h3>Produto 3</h3>
-        <p class="price">R$ 70,00</p>
+        <a href="../paginas/product-page.html">
+          <img src="https://placehold.co/150x150/png" alt="Produto 3">
+          <h3>Produto 3</h3>
+          <p class="price">R$ 70,00</p>
+        </a>
       </div>
         <div class="product-item">
-            <img src="https://placehold.co/150x150/png" alt="Produto 4">
-            <h3>Produto 4</h3>
-            <p class="price">R$ 120,00</p>
+        <a href="../paginas/product-page.html">
+          <img src="https://placehold.co/150x150/png" alt="Produto 4">
+          <h3>Produto 4</h3>
+          <p class="price">R$ 120,00</p>
+        </a>
         </div>
     </div>
 
     <h2>Produtos em Promoção</h2>
     <div class="product-list">
       <div class="product-item">
+        <a href="../paginas/product-page.html">
         <img src="https://placehold.co/150x150/png" alt="Produto 4">
         <h3>Produto 4</h3>
         <p class="price"><span class="old-price">R$ 120,00</span> <span class="new-price">R$ 90,00</span></p>
+      </a>
       </div>
       <div class="product-item">
+        <a href="../paginas/product-page.html">
         <img src="https://placehold.co/150x150/png" alt="Produto 5">
         <h3>Produto 5</h3>
         <p class="price"><span class="old-price">R$ 95,00</span> <span class="new-price">R$ 75,00</span></p>
+      </a>
       </div>
       <div class="product-item">
+        <a href="../paginas/product-page.html">
         <img src="https://placehold.co/150x150/png" alt="Produto 6">
         <h3>Produto 6</h3>
         <p class="price"><span class="old-price">R$ 80,00</span> <span class="new-price">R$ 59,90</span></p>
+      </a>
       </div>
     </div>
   </div>
+
+<!-- Rodapé -->
+  <div class="spikebox" style="z-index: 0;">
+    <div class="spikes over" style="background-image: url(../img/spikeoverpattern.png);"></div>
+    <div style="color: white;background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
+      <p style="margin: 5px 0;font-weight: bold;">&copy; 2025 Usados+ - Todos os direitos reservados.</p>
+      <p style="margin: 5px 0;font-weight: bold;">Compra e venda de produtos usados com segurança e praticidade.</p>
+      <nav style="margin-top: 20px;margin-bottom: 20px;font-weight: bold;">
+        <a href="/sobre" style="color: #d68500; margin: 0 10px; text-decoration: none;">Sobre</a>
+        <a href="/contato" style="color: #d68500; margin: 0 10px; text-decoration: none;">Contato</a>
+        <a href="/termos" style="color: #d68500; margin: 0 10px; text-decoration: none;">Termos de uso</a>
+        <a href="/privacidade" style="color: #d68500; margin: 0 10px; text-decoration: none;">Política de privacidade</a>
+      </nav>
+    </div>
+</div>
 </body>
 </html>
