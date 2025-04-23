@@ -6,9 +6,26 @@
     <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
     <link rel="stylesheet" href="../estilos/global.css">
     <link rel="stylesheet" href="../estilos/product-page.css">
-    <title>Product-Page</title>
+    <link rel="stylesheet" href="../estilos/spikes.css">
+    <title>Product Page 📦</title>
 </head>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+        }
+    main{
+        flex:1;
+    }
+</style>
 <body>
+<main>
     <div class="header">
         <div class="logo">
             <a href="../paginas/main-page.html">
@@ -17,8 +34,8 @@
         </div>
         <div class="menu">
             <a href="main-page.html">Home</a>
-            <a href="notFound-page.html">Sobre</a>
-            <a href="notFound-page.html">Contato</a>
+            <a href="about-us-page.html">Sobre</a>
+            <a href="contact-page.html">Contato</a>
         </div>
         <div class="login_register">
           <a href="../paginas/login-page.html">Login</a>
@@ -94,6 +111,20 @@
         </div>
 
     </div>
-
+</main>
+<!-- Rodapé -->
+<div class="spikebox" style="z-index: 0;margin-top: 100px;">
+    <div class="spikes over" style="background-image: url(../img/spikeoverpattern.png);"></div>
+    <div style="color: white;background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
+      <p style="margin: 5px 0;font-weight: bold;">&copy; 2025 Usados+ - Todos os direitos reservados.</p>
+      <p style="margin: 5px 0;font-weight: bold;">Compra e venda de produtos usados com segurança e praticidade.</p>
+      <nav style="margin-top: 20px;margin-bottom: 20px;font-weight: bold;">
+        <a href="about-us-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Sobre</a>
+        <a href="contact-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Contato</a>
+        <a href="/termos" style="color: #d68500; margin: 0 10px; text-decoration: none;">Termos de uso</a>
+        <a href="/privacidade" style="color: #d68500; margin: 0 10px; text-decoration: none;">Política de privacidade</a>
+      </nav>
+    </div>
+</div>
 </body>
 </html>
