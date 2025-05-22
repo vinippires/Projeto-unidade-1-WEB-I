@@ -20,9 +20,9 @@
       <div class="Login-Container">
         <h1>Login</h1>
         <form action="main-page.html" method="post">
-          <input type="email" placeholder="Email" required /><br>
-          <input type="password" placeholder="Password" required /><br>
-          <a id="Login-Button" href="../paginas/my-products.html">Login</a>
+          <input type="email" placeholder="Email" id="email" required /><br>
+          <input type="password" placeholder="Password" id="password" required /><br>
+          <a id="Login-Button" onclick="login()" >Login</a>
         </form>
         <a href="../paginas/register-page.html"> não possui uma conta? Registre aqui</a>
       </div>
@@ -33,7 +33,30 @@
         <div style="background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
         </div>
     </div>
+<script>
+  //clean up localStorage loggedUser
+  localStorage.removeItem("loggedUser");
+function login(){
+  localStorage.removeItem("loggedUser");//remove usuario já logado
 
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const accountsList = JSON.parse(localStorage.getItem("accountsList")) || [];
+
+    const usuario = accountsList.find((usuario) => usuario.email === email && usuario.password === password);
+    if (usuario) {
+        alert("Login bem-sucedido!");
+
+        // salva usuario logado no localStorage
+        localStorage.setItem("loggedUser", JSON.stringify(usuario));
+        window.location.href = "main-page.html";
+
+    } else {
+        alert("Email ou senha incorretos!");
+    }
+  }
+
+</script>
 
 
 </body>

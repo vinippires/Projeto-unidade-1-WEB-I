@@ -8,6 +8,35 @@
         <link rel="stylesheet" href="../estilos/global.css">
         <link rel="stylesheet" href="../estilos/my-products.css">
     </head>
+    <style>
+
+        #user_name_display {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        #logoutButton {
+            background-color: #d68500; /* Red */
+            border: none;
+            border-radius: 7px;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        /* Responsive product cell ,make width =100px on smartphone */
+        @media screen and (max-width: 768px) {
+            .product-item {
+                width: 100px;
+            }
+        }
+    </style>
+
     <body>
         <div id="header">
             <div class="logo">
@@ -22,7 +51,7 @@
             </div>
             <div class="user-info">
               <img src="../img/user-solid.svg" alt="user-img" class="user-img">
-              <p>Nome do Usuário</p>
+              <a href="user_profile_page.html" id="user_name_display">Nome do Usuário</a>
             </div>
         </div>
 
@@ -95,4 +124,5 @@
             </div>
         </main>
     </body>
+    <script src="../js/global.js"></script>
 </html>
