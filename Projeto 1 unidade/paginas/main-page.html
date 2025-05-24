@@ -41,145 +41,136 @@
     </div>
   </div>
 
-  <div class="container">
-    <h2>Produtos em Destaque</h2>
-    <div class="product-list">
-    
-      <div class="product-item">
-        <a href="../paginas/product-page.html">
-          <img src="https://placehold.co/150x150/png" alt="Produto 1">
-          <h3>Produto 1</h3>
-          <p class="price">R$ 100,00</p>
-        </a>
-      </div>
-      <div class="product-item">
-        <a href="../paginas/product-page.html">
-          <img src="https://placehold.co/150x150/png" alt="Produto 2">
-          <h3>Produto 2</h3>
-          <p class="price">R$ 85,00</p>
-        </a>
-      </div>
-      <div class="product-item">
-        <a href="../paginas/product-page.html">
-          <img src="https://placehold.co/150x150/png" alt="Produto 3">
-          <h3>Produto 3</h3>
-          <p class="price">R$ 70,00</p>
-        </a>
-      </div>
-        <div class="product-item">
-        <a href="../paginas/product-page.html">
-          <img src="https://placehold.co/150x150/png" alt="Produto 4">
-          <h3>Produto 4</h3>
-          <p class="price">R$ 120,00</p>
-        </a>
-        </div>
-    </div>
+<!-- ... [mantém o mesmo até a div .container] ... -->
 
-    <h2>Produtos em Promoção</h2>
-    <div class="product-list">
-      <div class="product-item">
-        <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 4">
-        <h3>Produto 4</h3>
-        <p class="price"><span class="old-price">R$ 120,00</span> <span class="new-price">R$ 90,00</span></p>
-      </a>
-      </div>
-      <div class="product-item">
-        <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 5">
-        <h3>Produto 5</h3>
-        <p class="price"><span class="old-price">R$ 95,00</span> <span class="new-price">R$ 75,00</span></p>
-      </a>
-      </div>
-      <div class="product-item">
-        <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 6">
-        <h3>Produto 6</h3>
-        <p class="price"><span class="old-price">R$ 80,00</span> <span class="new-price">R$ 59,90</span></p>
-      </a>
-      </div>
-    </div>
-
-
-  <h2>Eletronicos</h2>
-  <div class="product-list">
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 7">
-        <h3>Produto 7</h3>
-        <p class="price">R$ 200,00</p>
-      </a>
-    </div>
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 8">
-        <h3>Produto 8</h3>
-        <p class="price">R$ 150,00</p>
-      </a>
-    </div>
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 9">
-        <h3>Produto 9</h3>
-        <p class="price">R$ 300,00</p>
-      </a>
-    </div>
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 10">
-        <h3>Produto 10</h3>
-        <p class="price">R$ 250,00</p>
-      </a>
-    </div>
-  </div>
-
-  <h2>Roupas</h2>
-  <div class="product-list">
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 11">
-        <h3>Produto 11</h3>
-        <p class="price">R$ 50,00</p>
-      </a>
-    </div>
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 12">
-        <h3>Produto 12</h3>
-        <p class="price">R$ 40,00</p>
-      </a>
-    </div>
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 13">
-        <h3>Produto 13</h3>
-        <p class="price">R$ 60,00</p>
-      </a>
-    </div>
-    <div class="product-item">
-      <a href="../paginas/product-page.html">
-        <img src="https://placehold.co/150x150/png" alt="Produto 14">
-        <h3>Produto 14</h3>
-        <p class="price">R$ 70,00</p>
-      </a>
-    </div>
-  </div>
+<div class="container">
+  <h2>Produtos Disponíveis</h2>
+  <div id="products-container"></div>
 </div>
+
 <!-- Rodapé -->
-  <div class="spikebox" style="z-index: 0;">
-    <div class="spikes over" style="background-image: url(../img/spikeoverpattern.png);"></div>
-    <div style="color: white;background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
-      <p style="margin: 5px 0;font-weight: bold;">&copy; 2025 Usados+ - Todos os direitos reservados.</p>
-      <p style="margin: 5px 0;font-weight: bold;">Compra e venda de produtos usados com segurança e praticidade.</p>
-      <nav style="margin-top: 20px;margin-bottom: 20px;font-weight: bold;">
-        <a href="about-us-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Sobre</a>
-        <a href="contact-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Contato</a>
-        <a href="/termos" style="color: #d68500; margin: 0 10px; text-decoration: none;">Termos de uso</a>
-        <a href="/privacidade" style="color: #d68500; margin: 0 10px; text-decoration: none;">Política de privacidade</a>
-      </nav>
-    </div>
+<div class="spikebox" style="z-index: 0;">
+  <div class="spikes over" style="background-image: url(../img/spikeoverpattern.png);"></div>
+  <div style="color: white;background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
+    <p style="margin: 5px 0;font-weight: bold;">&copy; 2025 Usados+ - Todos os direitos reservados.</p>
+    <p style="margin: 5px 0;font-weight: bold;">Compra e venda de produtos usados com segurança e praticidade.</p>
+    <nav style="margin-top: 20px;margin-bottom: 20px;font-weight: bold;">
+      <a href="about-us-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Sobre</a>
+      <a href="contact-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Contato</a>
+      <a href="/termos" style="color: #d68500; margin: 0 10px; text-decoration: none;">Termos de uso</a>
+      <a href="/privacidade" style="color: #d68500; margin: 0 10px; text-decoration: none;">Política de privacidade</a>
+    </nav>
+  </div>
 </div>
-</body>
 
-    <script src="../js/global.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById("products-container");
+
+  const placeholderProducts = [
+    {
+      name: "Smartphone Usado",
+      description: "Modelo antigo, mas funcionando",
+      price: 250,
+      category: "eletronicos",
+      creator: "Admin",
+      image: "https://placehold.co/150x150/png?text=Smartphone"
+    },
+    {
+      name: "Cadeira de Madeira",
+      description: "Bem conservada",
+      price: 150,
+      category: "moveis",
+      creator: "Admin",
+      image: "https://placehold.co/150x150/png?text=Cadeira"
+    },
+    {
+      name: "Camisa Azul",
+      description: "Tamanho M, pouco usada",
+      price: 40,
+      category: "roupas",
+      creator: "Admin",
+      image: "https://placehold.co/150x150/png?text=Camisa"
+    },
+    {
+      name: "Livro - Aventura",
+      description: "Leitura envolvente",
+      price: 30,
+      category: "livros",
+      creator: "Admin",
+      image: "https://placehold.co/150x150/png?text=Livro"
+    },
+    {
+      name: "Tênis de Corrida",
+      description: "Quase novo",
+      price: 120,
+      category: "esportes",
+      creator: "Admin",
+      image: "https://placehold.co/150x150/png?text=T%C3%AAnis"
+    },
+    {
+      name: "Fone de Ouvido",
+      description: "Bom estado",
+      price: 70,
+      category: "eletronicos",
+      creator: "Admin",
+      image: "https://placehold.co/150x150/png?text=Fone"
+    }
+  ];
+
+  let productsList = JSON.parse(localStorage.getItem("productsList")) || [];
+
+  // Se houver menos de 6 produtos, completar com placeholders
+  if (productsList.length < 6) {
+    const needed = 6 - productsList.length;
+    // Adiciona apenas placeholders que ainda não existem na lista
+    const existingNames = new Set(productsList.map(p => p.name));
+    const toAdd = placeholderProducts.filter(p => !existingNames.has(p.name)).slice(0, needed);
+    productsList = productsList.concat(toAdd);
+    localStorage.setItem("productsList", JSON.stringify(productsList));
+  }
+
+  // Agrupar produtos por categoria
+  const grouped = {};
+  for (const product of productsList) {
+    const cat = product.category || "Outros";
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(product);
+  }
+
+  // Gerar HTML
+  for (const category in grouped) {
+    const section = document.createElement("section");
+    section.innerHTML = `<h2 style="margin-top: 30px;">${capitalize(category)}</h2>`;
+    const list = document.createElement("div");
+    list.className = "product-list";
+
+    grouped[category].forEach(product => {
+      const item = document.createElement("div");
+      item.className = "product-item";
+      item.innerHTML = `
+        <a href="../paginas/product-page.html">
+          <img src="${product.image}" alt="${product.name}" 
+            onerror="this.onerror=null;this.src='https://placehold.co/150x150/png?text=Imagem+Indisponível';">
+          <h3>${product.name}</h3>
+          <p class="price">R$ ${parseFloat(product.price).toFixed(2)}</p>
+        </a>
+      `;
+      list.appendChild(item);
+    });
+
+    section.appendChild(list);
+    container.appendChild(section);
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+});
+</script>
+
+
+<script src="../js/global.js"></script>
+</body>
 </html>
+

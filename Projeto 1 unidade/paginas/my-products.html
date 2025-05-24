@@ -1,128 +1,130 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Meus Produtos 📦</title>
-        <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
-        <link rel="stylesheet" href="../estilos/global.css">
-        <link rel="stylesheet" href="../estilos/my-products.css">
-    </head>
-    <style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Produtos 📦</title>
+  <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
+  <link rel="stylesheet" href="../estilos/global.css">
+  <link rel="stylesheet" href="../estilos/my-products.css">
+  <style>
+    #user_name_display {
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    #logoutButton {
+      background-color: #d68500;
+      border: none;
+      border-radius: 7px;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+    @media screen and (max-width: 768px) {
+      .product-item {
+        width: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <div class="logo">
+      <a href="../paginas/main-page.html">
+        <img src="../img/logo.png" alt="Logo">
+      </a>
+    </div>
+    <div class="menu">
+      <a href="main-page.html">Home</a>
+      <a href="about-us-page.html">Sobre</a>
+      <a href="contact-page.html">Contato</a>
+    </div>
+    <div class="user-info">
+      <img src="../img/user-solid.svg" alt="user-img" class="user-img">
+      <a href="user_profile_page.html" id="user_name_display">Nome do Usuário</a>
+    </div>
+  </div>
 
-        #user_name_display {
-            font-weight: bold;
-            margin-left: 10px;
-        }
-        #logoutButton {
-            background-color: #d68500; /* Red */
-            border: none;
-            border-radius: 7px;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            font-weight: bold;
-            margin-left: 20px;
-            cursor: pointer;
-        }
+  <main>
+    <div class="side-menu">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="../paginas/main-page.html">Página Inicial</a></li>
+        <li><a href="#">Meus Produtos</a></li>
+        <li><a href="#">Perfil</a></li>
+        <li><a href="#">Loja</a></li>
+        <li><a href="#">Mensagens</a></li>
+        <li><a href="#">Notificações</a></li>
+        <li><a href="#">Meus Pedidos</a></li>
+        <li><a href="#">Minhas Vendas</a></li>
+        <li><a href="#">Configurações</a></li>
+        <li><a href="../paginas/register-page.html">Sair</a></li>
+      </ul>
+    </div>
 
-        /* Responsive product cell ,make width =100px on smartphone */
-        @media screen and (max-width: 768px) {
-            .product-item {
-                width: 100px;
-            }
-        }
-    </style>
+    <div class="container">
+      <div class="sub-header">
+        <h2>Meus Produtos</h2>
+        <a href="../paginas/create-product-page.html">
+          <div class="add-product">
+            <img src="../img/add-circle-svgrepo-com.svg" alt="Add-ico">Produto
+          </div>
+        </a>
+      </div>
 
-    <body>
-        <div id="header">
-            <div class="logo">
-                <a href="../paginas/main-page.html">
-                    <img src="../img/logo.png" alt="Logo">
-                </a>
-            </div>
-            <div class="menu">
-                <a href="main-page.html">Home</a>
-                <a href="about-us-page.html">Sobre</a>
-                <a href="contact-page.html">Contato</a>
-            </div>
-            <div class="user-info">
-              <img src="../img/user-solid.svg" alt="user-img" class="user-img">
-              <a href="user_profile_page.html" id="user_name_display">Nome do Usuário</a>
-            </div>
+      <div class="product-list"></div>
+    </div>
+  </main>
+
+  <script src="../js/global.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const productsList = JSON.parse(localStorage.getItem('productsList')) || [];
+      const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+      const userName = loggedUser ? loggedUser.name : 'Usuário';
+
+      document.getElementById('user_name_display').textContent = userName;
+
+      const productListContainer = document.querySelector('.product-list');
+      productListContainer.innerHTML = '';
+
+      const userProducts = productsList
+        .map((product, index) => ({ ...product, originalIndex: index }))
+        .filter(product => product.creator === userName);
+
+      userProducts.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.className = 'product-item';
+        productItem.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" onerror="this.onerror=null;this.src='https://placehold.co/150x150/png?text=Imagem+Indisponível';">
+        <div class="product-detail">
+            <h3>${product.name}</h3>
+            <p class="price">R$ ${parseFloat(product.price).toFixed(2)}</p>
+            <p class="quantity"> ${product.quantity} <b>Unidades<b></p>
+            <img src="../img/edit-ui-svgrepo-com.svg" alt="Editar" class="product-opt edit-btn" data-index="${product.originalIndex}">
+            <img src="../img/delete-2-svgrepo-com.svg" alt="Excluir" class="product-opt delete-btn" data-index="${product.originalIndex}">
         </div>
+        `;
+        productListContainer.appendChild(productItem);
+      });
 
-        <main>
-            <div class="side-menu">
-                <h2>Menu</h2>
-                <ul>
-                    <li><a href="../paginas/main-page.html">Página Inicial</a></li>
-                    <li><a href="#">Meus Produtos</a></li>
-                    <li><a href="#">Perfil</a></li>
-                    <li><a href="#">Loja</a></li>
-                    <li><a href="#">Mensagens</a></li>
-                    <li><a href="#">Notificações</a></li>
-                    <li><a href="#">Meus Pedidos</a></li>
-                    <li><a href="#">Minhas Vendas</a></li>
-                    <li><a href="#">Configurações</a></li>
-                    <li><a href="../paginas/register-page.html">Sair</a></li>
-                </ul>
-            </div>
-
-            <div class="container">
-                <div class="sub-header">
-                    <h2>Meus Produtos</h2>
-                    <a href="#">
-                        <div class="add-product">
-                            <img src="../img/add-circle-svgrepo-com.svg" alt="Add-ico">Produto
-                        </div>
-                    </a>
-                </div>
-                <div class="product-list">
-                    <div class="product-item">
-                        <img src="https://placehold.co/150x150/png" alt="Produto 1">
-                        <div class="product-detail">
-                            <h3>Produto 1</h3>
-                            <p class="price">R$ 100,00</p>
-                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
-                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <img src="https://placehold.co/150x150/png" alt="Produto 2">
-                        <div class="product-detail">
-                            <h3>Produto 2</h3>
-                            <p class="price">R$ 85,00</p>
-                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
-                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <img src="https://placehold.co/150x150/png" alt="Produto 3">
-                        <div class="product-detail">
-                            <h3>Produto 3</h3>
-                            <p class="price">R$ 70,00</p>
-                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
-                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <img src="https://placehold.co/150x150/png" alt="Produto 4">
-                        <div class="product-detail">
-                            <h3>Produto 4</h3>
-                            <p class="price">R$ 120,00</p>
-                            <img src="../img/edit-ui-svgrepo-com.svg" alt="edit-ico" class="product-opt">
-                            <img src="../img/delete-2-svgrepo-com.svg" alt="delte-ico" class="product-opt">
-                        </div>
-                    </div>
-                    
-                </div>
-                
-            </div>
-        </main>
-    </body>
-    <script src="../js/global.js"></script>
+      productListContainer.addEventListener('click', function (e) {
+        const index = e.target.getAttribute('data-index');
+        if (e.target.classList.contains('delete-btn')) {
+          if (confirm("Tem certeza que deseja excluir este produto?")) {
+            const updatedList = productsList.filter((_, i) => i != index);
+            localStorage.setItem('productsList', JSON.stringify(updatedList));
+            location.reload();
+          }
+        } else if (e.target.classList.contains('edit-btn')) {
+          localStorage.setItem('editProductIndex', index);
+          window.location.href = 'create-product-page.html';
+        }
+      });
+    });
+  </script>
+</body>
 </html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>create product 📦</title>
+  <link rel="stylesheet" href="../estilos/main.css" />
+  <link rel="stylesheet" href="../estilos/global.css" />
+  <link rel="stylesheet" href="../estilos/spikes.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+  <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
+  <style>
+    #submit {
+      color: #fff !important;
+      background-color: #205781 !important;
+      border-color: #205781 !important;
+    }
+    #submit:hover {
+      background-color: #d68500 !important;
+      border-color: #d68500 !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <div class="logo">
+      <a href="../paginas/main-page.html">
+        <img src="../img/logo.png" alt="Logo">
+      </a>
+    </div>
+    <div class="menu">
+      <a href="main-page.html">Home</a>
+      <a href="about-us-page.html">Sobre</a>
+      <a href="contact-page.html">Contato</a>
+    </div>
+    <div class="login_register">
+      <a href="../paginas/login-page.html">Login</a>
+      <a href="../paginas/register-page.html">Registrar</a>
+    </div>
+  </div>
+
+  <div class="container my-5 py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <form id="create-product-form" method="post" enctype="multipart/form-data" class="card p-4 shadow">
+          <h1 class="mb-4 text-center">Criar Produto</h1>
+          <div class="form-group">
+            <label for="product-name">Nome do Produto</label>
+            <input type="text" class="form-control" id="product-name" required>
+          </div>
+          <div class="form-group">
+            <label for="product-description">Descrição do Produto</label>
+            <textarea class="form-control" id="product-description" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="product-price">Preço do Produto (R$)</label>
+            <input type="number" class="form-control" id="product-price" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label for="product-category">Categoria do Produto</label>
+            <select class="form-control" id="product-category" required>
+              <option value="" disabled selected>Selecione uma categoria</option>
+              <option value="eletronicos">Eletrônicos</option>
+              <option value="moveis">Móveis</option>
+              <option value="roupas">Roupas</option>
+              <option value="livros">Livros</option>
+              <option value="esportes">Esportes</option>
+              <option value="outros">Outros</option>
+            </select>
+          </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="product-type">Tipo do Produto</label>
+                        <input type="text" class="form-control" id="product-type" maxlength="25" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="product-condition">Condição do Produto</label>
+                        <select class="form-control" id="product-condition" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="novo">Novo</option>
+                            <option value="usado">Usado</option>
+                            <option value="reformado">Reformado</option>
+                            <option value="defeituoso">Defeituoso</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="product-quantity">Quantidade</label>
+                        <input type="number" class="form-control" id="product-quantity" min="1" max="999" required>
+                    </div>
+                </div>
+
+            </div>
+          <div class="form-group">
+            <label for="product-image">Imagem do Produto</label>
+            <input type="file" class="form-control-file" id="product-image" accept="image/*">
+          </div>
+          <button id="submit" type="submit" class="btn btn-primary btn-block">Salvar Produto</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="spikebox" style="z-index: 0;">
+    <div class="spikes over" style="background-image: url(../img/spikeoverpattern.png);"></div>
+    <div style="color: white; background-color: #205781; height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+      <p style="margin: 5px 0;font-weight: bold;">&copy; 2025 Usados+ - Todos os direitos reservados.</p>
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const editIndex = localStorage.getItem('editProductIndex');
+      if (editIndex !== null) {
+        const productsList = JSON.parse(localStorage.getItem('productsList')) || [];
+        const product = productsList[editIndex];
+        if (product) {
+          document.getElementById('product-name').value = product.name;
+          document.getElementById('product-description').value = product.description;
+          document.getElementById('product-price').value = product.price;
+          document.getElementById('product-category').value = product.category;
+        }
+      }
+    });
+
+    document.getElementById('create-product-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('product-name').value;
+      const description = document.getElementById('product-description').value;
+      const price = document.getElementById('product-price').value;
+      const category = document.getElementById('product-category').value;
+      const quantity = document.getElementById('product-quantity').value;
+      const type = document.getElementById('product-type').value;
+      const condition = document.getElementById('product-condition').value;
+      const imageFile = document.getElementById('product-image').files[0];
+      const loggedUser = JSON.parse(localStorage.getItem('loggedUser')) || { name: "Desconhecido" };
+
+      const saveProduct = (imageBase64) => {
+        const newProduct = { creator: loggedUser.name, name, description, price: parseFloat(price), category, quantity,type,condition, image: imageBase64 };
+        let productsList = JSON.parse(localStorage.getItem('productsList')) || [];
+        const editIndex = localStorage.getItem('editProductIndex');
+
+        if (editIndex !== null) {
+          productsList[editIndex] = newProduct;
+          localStorage.removeItem('editProductIndex');
+        } else {
+          productsList.push(newProduct);
+        }
+
+        localStorage.setItem('productsList', JSON.stringify(productsList));
+        alert('Produto salvo com sucesso!');
+        window.location.href = 'my-products.html';
+      };
+
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = e => saveProduct(e.target.result);
+        reader.readAsDataURL(imageFile);
+      } else {
+        const editIndex = localStorage.getItem('editProductIndex');
+        const productsList = JSON.parse(localStorage.getItem('productsList')) || [];
+        const product = editIndex !== null ? productsList[editIndex] : null;
+        if (product && product.image) {
+          saveProduct(product.image);
+        } else {
+          alert("Por favor, envie uma imagem.");
+        }
+      }
+    });
+  </script>
+</body>
+</html>

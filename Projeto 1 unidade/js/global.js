@@ -7,7 +7,7 @@ if (!user) {
     const loginRegister = document.querySelector(".login_register");
     if (loginRegister) {
         loginRegister.innerHTML = `
-            <a href="../paginas/my-products.html">Meus Produtos</a>
+            <a href="../paginas/my-products.html" style="text-decoration: none; color: white;">Meus Produtos</a>
             <a href="#" id="logoutButton" onclick="logout()">Sair</a>`;
     }
 
