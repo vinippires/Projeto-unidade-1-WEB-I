@@ -45,6 +45,8 @@ function saveOnAccountsList() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
+    const placeholderImage = "https://placehold.co/150x150/png?text=User+Image";
+    const userImage = placeholderImage;
 
     if (password !== confirmPassword) {
         alert("As senhas não coincidem!");
@@ -55,7 +57,7 @@ function saveOnAccountsList() {
     }
 
     const accountsList = JSON.parse(localStorage.getItem("accountsList")) || [];
-    accountsList.push({ name, email, password });
+    accountsList.push({ name, email, password, userImage });
     localStorage.setItem("accountsList", JSON.stringify(accountsList));
 }
 

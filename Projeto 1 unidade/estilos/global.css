@@ -117,8 +117,11 @@ main{
     font-weight: bold;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 730px) {
     .menu {
+      display: none;
+    }
+    #user_name_display {
       display: none;
     }
 

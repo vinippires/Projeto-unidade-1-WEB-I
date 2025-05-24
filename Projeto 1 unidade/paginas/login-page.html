@@ -47,6 +47,10 @@ function login(){
     if (usuario) {
         alert("Login bem-sucedido!");
 
+        if(usuario.userImage === undefined){
+            usuario.userImage = "https://placehold.co/150x150/png?text=User+Image";
+        }
+
         // salva usuario logado no localStorage
         localStorage.setItem("loggedUser", JSON.stringify(usuario));
         window.location.href = "main-page.html";
