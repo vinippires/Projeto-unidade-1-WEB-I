@@ -9,7 +9,7 @@ body {
 main{
   flex:1;
 }
-  #header {
+#header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,17 +21,24 @@ main{
     padding: 10px 30px;
     box-sizing: border-box;
     z-index: 10;
-  }
+    font-size: 1rem; /* Add this line */
+}
 
   .logo img {
     height: 50px;
   }
 
-  .menu a, .login_register a {
+  .menu a{
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  .login_register a {
     color: white;
     text-decoration: none;
     margin: 0 10px;
     font-weight: bold;
+    
   }
 
   #user_name_display {

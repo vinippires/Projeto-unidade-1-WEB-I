@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil do Usuário 📦</title>
+  <link rel="stylesheet" href="../estilos/global.css">
+  <link rel="stylesheet" href="../estilos/spikes.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+  <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
+  <style>
+    .perfil-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #f1f1f1;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .perfil-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .editable {
+      display: inline-block;
+      min-width: 200px;
+      border-bottom: 1px dashed #aaa;
+      padding: 5px;
+      cursor: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<div id="header">
+  <div class="logo">
+    <a href="../paginas/main-page.html">
+      <img src="../img/logo.png" alt="Logo">
+    </a>
+  </div>
+  <div class="menu">
+    <a href="main-page.html">Home</a>
+    <a href="about-us-page.html">Sobre</a>
+    <a href="contact-page.html">Contato</a>
+  </div>
+  <div class="login_register">
+    <a href="../paginas/login-page.html">Login</a>
+    <a href="../paginas/register-page.html">Registrar</a>
+  </div>
+</div>
+
+<main style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin-top: 50px;">
+  <div class="perfil-container shadow p-4 bg-white rounded" style="min-width: 700px;">
+    <h1 class="mb-4">Meu Perfil</h1>
+    <img id="profile-picture" src="" alt="Foto de Perfil" class="profile-img">
+    <div class="mb-4 d-flex flex-column align-items-center" style="margin-top: 20px;">
+      <label for="new-image" class="btn btn-outline-secondary mb-2" style="cursor:pointer;">
+        Alterar foto de perfil
+        <input type="file" id="new-image" accept="image/*" class="d-none">
+      </label>
+      <small class="text-muted">Formatos aceitos: JPG, PNG, GIF. Máx: 2MB.</small>
+    </div>
+
+    <p><strong>Nome:</strong> <span id="user-name"></span></p>
+    <p><strong>Email:</strong> <span id="user-email"></span></p>
+
+    <p><strong>CEP:</strong> 
+      <span id="user-cep" class="editable" contenteditable="true">Clique para editar</span>
+      <button class="btn btn-sm btn-outline-info ml-2" onclick="validarEndereco()">Validar</button>
+      <small id="address-validation-msg" class="text-muted d-block mt-1"></small>
+    </p>
+
+    <p><strong>Telefone:</strong> 
+      <span id="user-phone" class="editable" contenteditable="true">Clique para editar</span>
+    </p>
+
+    <button class="btn btn-primary mt-3" onclick="salvarDados()">Salvar Alterações</button>
+  </div>
+</main>
+
+<div style="height: 100px;"></div>
+
+<!-- Rodapé -->
+<div class="spikebox" style="z-index: 0;">
+  <div class="spikes over" style="background-image: url(../img/spikeoverpattern.png);"></div>
+  <div style="color: white;background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
+    <p style="margin: 5px 0;font-weight: bold;">&copy; 2025 Usados+ - Todos os direitos reservados.</p>
+    <p style="margin: 5px 0;font-weight: bold;">Compra e venda de produtos usados com segurança e praticidade.</p>
+    <nav style="margin-top: 20px;margin-bottom: 20px;font-weight: bold;">
+      <a href="about-us-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Sobre</a>
+      <a href="contact-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Contato</a>
+      <a href="notFound-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Termos de uso</a>
+      <a href="notFound-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Política de privacidade</a>
+    </nav>
+  </div>
+</div>
+
+<script src="../js/global.js"></script>
+<script>
+  const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+  if (!loggedUser) {
+    alert("Você precisa estar logado.");
+    window.location.href = "login-page.html";
+  }
+
+  const userDataStore = JSON.parse(localStorage.getItem("userData")) || {};
+  const userKey = loggedUser.email;
+  const dados = userDataStore[userKey] || {};
+
+  // Preencher dados do perfil
+  document.getElementById("user-name").textContent = loggedUser.name;
+  document.getElementById("user-email").textContent = loggedUser.email;
+  document.getElementById("profile-picture").src = loggedUser.userImage || "https://placehold.co/150x150/png?text=User+Image";
+  document.getElementById("user-cep").textContent = dados.cep || "Clique para editar";
+  document.getElementById("user-phone").textContent = dados.phone || "Clique para editar";
+
+  // Trocar imagem de perfil
+  document.getElementById("new-image").addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("profile-picture").src = e.target.result;
+        loggedUser.userImage = e.target.result;
+        localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+
+        const accountsList = JSON.parse(localStorage.getItem("accountsList")) || [];
+        const index = accountsList.findIndex(u => u.email === loggedUser.email);
+        if (index !== -1) {
+          accountsList[index].userImage = e.target.result;
+          localStorage.setItem("accountsList", JSON.stringify(accountsList));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Endereço validado
+  let enderecoValidado = dados.address || "";
+
+  function salvarDados() {
+    const cep = document.getElementById("user-cep").textContent.trim();
+    const phone = document.getElementById("user-phone").textContent.trim();
+    const address = enderecoValidado || "";
+
+    if (!cep || !phone) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (!/^\d{5}-?\d{3}$/.test(cep)) {
+      alert("CEP inválido. Use o formato 00000-000.");
+      return;
+    }
+
+
+    userDataStore[userKey] = {
+      name: loggedUser.name,
+      email: loggedUser.email,
+      userImage: loggedUser.userImage || "",
+      cep,
+      address,
+      phone
+    };
+
+    localStorage.setItem("userData", JSON.stringify(userDataStore));
+    alert("Dados salvos com sucesso!");
+  }
+
+  function validarEndereco() {
+    const cepSpan = document.getElementById("user-cep");
+    const msg = document.getElementById("address-validation-msg");
+    const cep = cepSpan.textContent.trim();
+
+    const cepMatch = cep.match(/\b\d{5}-?\d{3}\b/);
+    if (!cepMatch) {
+      msg.textContent = "CEP deve estar no formato válido (ex: 01001-000).";
+      msg.style.color = "red";
+      enderecoValidado = "";
+      return;
+    }
+
+    const cepLimpo = cepMatch[0].replace("-", "");
+
+    msg.textContent = "Validando endereço...";
+    msg.style.color = "#888";
+
+    fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.erro) {
+          msg.textContent = "CEP não encontrado.";
+          msg.style.color = "red";
+          enderecoValidado = "";
+        } else {
+          enderecoValidado = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+          msg.textContent = `Endereço válido: ${enderecoValidado}`;
+          msg.style.color = "green";
+        }
+      })
+      .catch(() => {
+        msg.textContent = "Erro ao validar o CEP.";
+        msg.style.color = "red";
+        enderecoValidado = "";
+      });
+  }
+</script>
+
+</body>
+</html>

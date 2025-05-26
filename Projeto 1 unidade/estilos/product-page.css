@@ -149,8 +149,11 @@ hr{
       align-items: center;
     }
 
-    .foto-anuncio{
-        width: 100%;
+    .foto-anuncio {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 12px;
     }
 
     .card-preco{

@@ -35,10 +35,11 @@
       <p>Compre e venda produtos usados com facilidade!</p>
     </div>
 
-    <div class="searchbar">
-      <input type="text" placeholder="Pesquisar produtos...">
+    <form class="searchbar" id="searchForm" onsubmit="return false;">
+      <input type="text" id="searchInput" placeholder="Pesquisar produtos...">
       <button type="submit">Buscar</button>
-    </div>
+    </form>
+    
   </div>
 
 <!-- ... [mantém o mesmo até a div .container] ... -->
@@ -74,7 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
       price: 250,
       category: "eletronicos",
       creator: "Admin",
-      image: "https://placehold.co/150x150/png?text=Smartphone"
+      image: "https://placehold.co/150x150/png?text=Smartphone",
+      quantity: 1,
+      type: "Venda",
+      condition: "usado"
     },
     {
       name: "Cadeira de Madeira",
@@ -82,7 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
       price: 150,
       category: "moveis",
       creator: "Admin",
-      image: "https://placehold.co/150x150/png?text=Cadeira"
+      image: "https://placehold.co/150x150/png?text=Cadeira",
+      quantity: 2,
+      type: "Venda",
+      condition: "usado"
     },
     {
       name: "Camisa Azul",
@@ -90,7 +97,10 @@ document.addEventListener("DOMContentLoaded", function () {
       price: 40,
       category: "roupas",
       creator: "Admin",
-      image: "https://placehold.co/150x150/png?text=Camisa"
+      image: "https://placehold.co/150x150/png?text=Camisa",
+      quantity: 3,
+      type: "Venda",
+      condition: "usado"
     },
     {
       name: "Livro - Aventura",
@@ -98,7 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
       price: 30,
       category: "livros",
       creator: "Admin",
-      image: "https://placehold.co/150x150/png?text=Livro"
+      image: "https://placehold.co/150x150/png?text=Livro",
+      quantity: 5,
+      type: "Venda",
+      condition: "usado"
     },
     {
       name: "Tênis de Corrida",
@@ -106,7 +119,10 @@ document.addEventListener("DOMContentLoaded", function () {
       price: 120,
       category: "esportes",
       creator: "Admin",
-      image: "https://placehold.co/150x150/png?text=T%C3%AAnis"
+      image: "https://placehold.co/150x150/png?text=T%C3%AAnis",
+      quantity: 1,
+      type: "Venda",
+      condition: "usado"
     },
     {
       name: "Fone de Ouvido",
@@ -114,7 +130,10 @@ document.addEventListener("DOMContentLoaded", function () {
       price: 70,
       category: "eletronicos",
       creator: "Admin",
-      image: "https://placehold.co/150x150/png?text=Fone"
+      image: "https://placehold.co/150x150/png?text=Fone",
+      quantity: 4,
+      type: "Venda",
+      condition: "usado"
     }
   ];
 
@@ -149,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const item = document.createElement("div");
       item.className = "product-item";
       item.innerHTML = `
-        <a href="../paginas/product-page.html">
+        <a href="../paginas/product-page.html" onclick='verProduto(${JSON.stringify(product)})'>
           <img src="${product.image}" alt="${product.name}" 
             onerror="this.onerror=null;this.src='https://placehold.co/150x150/png?text=Imagem+Indisponível';">
           <h3>${product.name}</h3>
@@ -167,10 +186,20 @@ document.addEventListener("DOMContentLoaded", function () {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 });
+
+function verProduto(produto) {
+  localStorage.setItem('selectedProduct', JSON.stringify(produto));
+}
+
+
+
+
 </script>
 
 
 <script src="../js/global.js"></script>
+<!-- Certifique-se de que o arquivo searchbar.js existe no caminho correto e está implementado corretamente -->
+<script src="../js/searchbar.js"></script>
 </body>
 </html>
 

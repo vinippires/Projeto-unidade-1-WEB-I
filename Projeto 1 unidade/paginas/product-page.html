@@ -23,6 +23,13 @@
     main{
         flex:1;
     }
+    .foto-anuncio {
+        width: 500px;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow:  0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 </style>
 <body>
 <main>
@@ -85,20 +92,20 @@
                 <br>
                 <br>
                 <img src="../img/phone-solid.svg" class="icone">
-                <p class="local">+55 (84) 9999-9999</p>
+                <p id="telefoneComprador" class="local">+55 (84) 9999-9999</p>
                 <br>
                 <img src="../img/map-solid.svg" class="icone">
-                <p class="local">Parnamirim, Emaús</p>
+                <p id="endereçoComprador" class="local">Parnamirim, Emaús</p>
                 <br>
                 <img src="../img/location-dot-solid.svg" class="icone">
-                <p class="local">CEP - 591480601</p>
+                <p id="cepComprador" class="local">CEP - 591480601</p>
             </div>
             <hr>
         </div>
 
         <div class="card-preco">
             <h1>R$ 720</h1>
-            <p>3x sem juros de R$ 240,00</p>
+            <p id="parcelamento">3x sem juros de R$ 240,00</p>
             <small class="pequeno">mais opções de parcelamento</small>
             <hr>
             <p>Calcular o frete</p>
@@ -127,5 +134,43 @@
     </div>
 </div>
 </body>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const product = JSON.parse(localStorage.getItem("selectedProduct"));
+    if (!product) return;
+
+    document.querySelector(".foto-anuncio").src = product.image;
+    document.querySelector(".descricao h1").textContent = product.name;
+    document.querySelector(".descricao p").textContent = product.description;
+    document.querySelector(".card-preco h1").textContent = `R$ ${parseFloat(product.price).toFixed(2)}`;
+    document.querySelector(".tabela-detalhes").innerHTML = `
+      <tr>
+        <th>Categoria</th>
+        <th>Tipo</th>
+        <th>Condição</th>
+      </tr>
+      <tr>
+        <td>${product.category}</td>
+        <td>${product.type}</td>
+        <td>${product.condition}</td>
+      </tr>
+    `;
+
+      //parcelamento
+    const quatidadeParcelas = 3; // Número de parcelas
+    const valorParcelado = (product.price / quatidadeParcelas).toFixed(2);
+    document.querySelector("#parcelamento").textContent = `${quatidadeParcelas}x sem juros de R$ ${valorParcelado}`;
+      //
+
+
+    document.querySelector(".info-pessoa h3").textContent = product.creator || "Vendedor";
+    document.querySelector("#telefoneComprador").textContent = product.phone || "Telefone não informado";
+    document.querySelector("#endereçoComprador").textContent = product.address || "Endereço não informado";
+    document.querySelector("#cepComprador").textContent = product.cep || "CEP não informado";
+  });
+</script>
+
+
+
     <script src="../js/global.js"></script>
 </html>

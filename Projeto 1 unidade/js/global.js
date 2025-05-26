@@ -10,9 +10,9 @@ if (!user) {
             <div style="display: flex; align-items: center;">
             <a href="user_profile_page.html">
                 <img src="${user.image || 'https://placehold.co/40x40/png?text=User'}" alt="User Image" class="user-img" style="width: 42px; height: 42px; border-radius: 50%; vertical-align: middle; margin-right: 8px;">
-                <span id="user_name_display" style="color: white; margin-right: 16px; font-size: 20px; line-height: 1;"><b>${user.name}</b></span>
+                <span id="user_name_display" style="  font-size: 1rem;color: white; margin-right: 16px; font-size: 20px; line-height: 1;"><b>${user.name}</b></span>
             </a>
-            <a href="../paginas/my-products.html" style="text-decoration: none; color: white; margin-right: 12px; font-size: 16px;">Meus Produtos</a>
+            <a href="../paginas/my-products.html" style="  font-size: 1rem; text-decoration: none; color: white; margin-right: 12px; font-size: 16px;">Meus Produtos</a>
             <a href="#" id="logoutButton" onclick="logout()" style="color: white; font-size: 16px;">Sair</a>
             </div>`;
     }
