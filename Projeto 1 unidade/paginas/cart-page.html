@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="../estilos/global.css" />
+  <link rel="stylesheet" href="../estilos/cart-page.css" />
+  <link rel="stylesheet" href="../estilos/spikes.css" />
+  <link rel="icon" href="../img/logo.png" type="image/png" sizes="16x16" />
+  <title>Meu Carrinho - Usados+ 📦</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main.cart-container {
+      flex: 1;
+      padding-top: 100px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .spikebox {
+        margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <div class="logo">
+      <a href="../paginas/main-page.html">
+        <img src="../img/logo.png" alt="Logo">
+      </a>
+    </div>
+    <div class="menu">
+      <a href="main-page.html">Home</a>
+      <a href="about-us-page.html">Sobre</a>
+      <a href="contact-page.html">Contato</a>
+    </div>
+    <div class="login_register">
+      <a href="../paginas/login-page.html">Login</a>
+      <a href="../paginas/register-page.html">Registrar</a>
+    </div>
+  </div>
+
+  <main class="cart-container">
+    <h1 style="color: #205781; margin-bottom: 30px; text-align: center;">Meu Carrinho</h1>
+    <div id="cart-items-container">
+      </div>
+    <div id="cart-summary" style="margin-top: 30px;">
+      <h2>Resumo do Pedido</h2>
+      <p>Total: <strong id="cart-total" style="color: #d68500;">R$ 0.00</strong></p>
+      <button id="checkout-button">Finalizar Compra</button>
+    </div>
+  </main>
+
+  <div class="spikebox" style="z-index: 0;">
+    <div class="spikes over" style="background-image: url(../img/spikeoverpattern.png);"></div>
+    <div style="color: white;background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
+      <p style="margin: 5px 0;font-weight: bold;">&copy; 2025 Usados+ - Todos os direitos reservados.</p>
+      <p style="margin: 5px 0;font-weight: bold;">Compra e venda de produtos usados com segurança e praticidade.</p>
+      <nav style="margin-top: 20px;margin-bottom: 20px;font-weight: bold;">
+        <a href="about-us-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Sobre</a>
+        <a href="contact-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Contato</a>
+        <a href="notFound-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Termos de uso</a>
+        <a href="notFound-page.html" style="color: #d68500; margin: 0 10px; text-decoration: none;">Política de privacidade</a>
+      </nav>
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+  
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const cartItemsContainer = document.getElementById('cart-items-container');
+      const cartTotalElement = document.getElementById('cart-total');
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+      if (!loggedUser) {
+        alert("Você precisa estar logado para acessar o carrinho.");
+        window.location.href = "login-page.html";
+      }
+
+      const usersCartItems = JSON.parse(localStorage.getItem("usersCartItems")) || {};
+      const userKey = `${loggedUser.name}-${loggedUser.email}`;
+      let cartItems = usersCartItems[userKey] || [];
+
+
+
+      // Verifica se o carrinho está vazio e exibe uma mensagem apropriada
+      function renderCartItems() {
+        cartItemsContainer.innerHTML = '';
+        if (cartItems.length === 0) {
+          cartItemsContainer.innerHTML = '<p style="text-align:center; margin: 20px 0; font-size: 1.1em;">Seu carrinho está vazio.</p>';
+          if (cartTotalElement) cartTotalElement.textContent = 'R$ 0.00';
+          return;
+        }
+
+        let total = 0;
+        cartItems.forEach((item, index) => {
+          const itemElement = document.createElement('div');
+          itemElement.classList.add('cart-item');
+          
+          const itemPrice = parseFloat(item.price);
+          const itemDesiredQuantity = parseInt(item.desiredQuantity || 1); 
+
+          itemElement.innerHTML = `
+            <img src="${item.image || 'https://placehold.co/100x100/png?text=Produto'}" alt="${item.name || 'Nome do Produto'}">
+            <div class="cart-item-info">
+              <h3>${item.name || 'Produto sem nome'}</h3>
+              <p>Preço Unitário: R$ ${itemPrice.toFixed(2)}</p>
+              <p>Vendedor: ${item.creator || 'N/A'}</p>
+            </div>
+            <button class="remove-item-btn" data-index="${index}" title="Remover item">Remover</button>
+          `;
+          cartItemsContainer.appendChild(itemElement);
+          total += itemPrice * itemDesiredQuantity;
+        });
+
+        if (cartTotalElement) cartTotalElement.textContent = `R$ ${total.toFixed(2)}`;
+
+        document.querySelectorAll('.remove-item-btn').forEach(button => {
+          button.addEventListener('click', function() {
+            removeItemFromCart(parseInt(this.getAttribute('data-index')));
+          });
+        });
+        usersCartItems[userKey] = cartItems;
+        localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+
+      }
+
+      function removeItemFromCart(index) {
+        if (index >= 0 && index < cartItems.length) {
+          cartItems.splice(index, 1);
+          usersCartItems[userKey] = cartItems;
+          localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+          renderCartItems();
+        }
+      }
+
+    const checkoutButton = document.getElementById('checkout-button');
+    if (checkoutButton) {
+      checkoutButton.addEventListener('click', function () {
+        if (cartItems.length > 0) {
+          const usersBroughtItems = JSON.parse(localStorage.getItem("usersBroughtItems")) || {};
+          const currentBrought = usersBroughtItems[userKey] || [];
+          usersBroughtItems[userKey] = currentBrought.concat(cartItems);
+
+          // Limpa carrinho atual
+          cartItems = [];
+          usersCartItems[userKey] = [];
+
+          localStorage.setItem("usersBroughtItems", JSON.stringify(usersBroughtItems));
+          localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+          alert('Obrigado por comprar!');
+          renderCartItems();
+        } else {
+          alert('Seu carrinho está vazio. Adicione produtos antes de finalizar!');
+        }
+      });
+    }
+
+
+      renderCartItems();
+    });
+  </script>
+</body>
+</html>
