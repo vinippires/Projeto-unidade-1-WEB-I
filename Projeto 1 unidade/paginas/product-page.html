@@ -136,41 +136,88 @@
 </body>
 <script>
   window.addEventListener("DOMContentLoaded", () => {
-    const product = JSON.parse(localStorage.getItem("selectedProduct"));
-    if (!product) return;
+    const productString = localStorage.getItem("selectedProduct");
+    const product = productString ? JSON.parse(productString) : null;
 
-    document.querySelector(".foto-anuncio").src = product.image;
-    document.querySelector(".descricao h1").textContent = product.name;
-    document.querySelector(".descricao p").textContent = product.description;
-    document.querySelector(".card-preco h1").textContent = `R$ ${parseFloat(product.price).toFixed(2)}`;
-    document.querySelector(".tabela-detalhes").innerHTML = `
-      <tr>
-        <th>Categoria</th>
-        <th>Tipo</th>
-        <th>Condição</th>
-      </tr>
-      <tr>
-        <td>${product.category}</td>
-        <td>${product.type}</td>
-        <td>${product.condition}</td>
-      </tr>
-    `;
+    // Seletores para os elementos da página
+    const comprarButton = document.querySelector(".botao-card.laranja");
+    const nomeProdutoEl = document.querySelector(".descricao h1");
+    const descricaoProdutoEl = document.querySelector(".descricao p");
+    const fotoAnuncioEl = document.querySelector(".foto-anuncio");
+    const precoEl = document.querySelector(".card-preco h1");
+    const tabelaDetalhesEl = document.querySelector(".tabela-detalhes");
+    const parcelamentoEl = document.querySelector("#parcelamento");
+    const nomeVendedorEl = document.querySelector(".info-pessoa h3.local");
+    const telefoneCompradorEl = document.querySelector("#telefoneComprador");
+    const enderecoCompradorEl = document.querySelector("#endereçoComprador");
+    const cepCompradorEl = document.querySelector("#cepComprador");
 
-      //parcelamento
-    const quatidadeParcelas = 3; // Número de parcelas
-    const valorParcelado = (product.price / quatidadeParcelas).toFixed(2);
-    document.querySelector("#parcelamento").textContent = `${quatidadeParcelas}x sem juros de R$ ${valorParcelado}`;
-      //
+    if (!product) {
+        if (nomeProdutoEl) nomeProdutoEl.textContent = "Produto Indisponível";
+        if (descricaoProdutoEl) descricaoProdutoEl.textContent = "Por favor, selecione um produto na loja ou volte para a página principal.";
+        if (fotoAnuncioEl) fotoAnuncioEl.src = 'https://placehold.co/500x500/png?text=Produto+N%C3%A3o+Encontrado';
+        if (comprarButton) comprarButton.disabled = true;
+        return;
+    }
 
+    // Preenche os dados do produto na página
+    if (fotoAnuncioEl) fotoAnuncioEl.src = product.image || 'https://placehold.co/500x500/png?text=Imagem+Indispon%C3%ADvel';
+    if (nomeProdutoEl) nomeProdutoEl.textContent = product.name || "Nome Indisponível";
+    if (descricaoProdutoEl) descricaoProdutoEl.textContent = product.description || "Descrição não fornecida.";
+    if (precoEl) precoEl.textContent = `R$ ${parseFloat(product.price).toFixed(2)}`;
+    
+    if (tabelaDetalhesEl) {
+        tabelaDetalhesEl.innerHTML = `
+        <tr>
+            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Condição</th>
+        </tr>
+        <tr>
+            <td>${product.category || 'N/A'}</td>
+            <td>${product.type || 'N/A'}</td>
+            <td>${product.condition || 'N/A'}</td>
+        </tr>
+        `;
+    }
 
-    document.querySelector(".info-pessoa h3").textContent = product.creator || "Vendedor";
-    document.querySelector("#telefoneComprador").textContent = product.phone || "Telefone não informado";
-    document.querySelector("#endereçoComprador").textContent = product.address || "Endereço não informado";
-    document.querySelector("#cepComprador").textContent = product.cep || "CEP não informado";
+    if (parcelamentoEl && product.price) {
+        const quantidadeParcelas = 3;
+        const valorParcelado = (parseFloat(product.price) / quantidadeParcelas).toFixed(2);
+        parcelamentoEl.textContent = `${quantidadeParcelas}x s/ juros de R$ ${valorParcelado}`;
+    }
+
+    if (nomeVendedorEl) nomeVendedorEl.textContent = product.creator || "Vendedor Anônimo";
+    if (telefoneCompradorEl) telefoneCompradorEl.textContent = product.phone || "Não informado";
+    if (enderecoCompradorEl) enderecoCompradorEl.textContent = product.address || "Não informado";
+    if (cepCompradorEl) cepCompradorEl.textContent = product.cep || "Não informado";
+
+    if (comprarButton) {
+        comprarButton.disabled = false; 
+    }
+
+    if (comprarButton) {
+        comprarButton.addEventListener("click", function() {
+            if (!product || !product.name) {
+                alert("Erro: Não foi possível identificar o produto. Tente novamente.");
+                return;
+            }
+
+            let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+            
+            const productToAdd = { 
+                ...product, 
+                desiredQuantity: 1
+            };
+
+            cartItems.push(productToAdd);
+            
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+            alert(`"${product.name}" foi adicionado ao carrinho!`);
+            window.location.href = 'cart-page.html';
+        });
+    }
   });
 </script>
 
-
-
-    <script src="../js/global.js"></script>
-</html>
+<script src="../js/global.js"></script>
