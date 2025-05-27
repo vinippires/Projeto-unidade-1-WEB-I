@@ -74,11 +74,25 @@
 
   <script src="../js/global.js"></script>
   <script>
+  
+
+
     document.addEventListener('DOMContentLoaded', function() {
       const cartItemsContainer = document.getElementById('cart-items-container');
       const cartTotalElement = document.getElementById('cart-total');
-      let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+      if (!loggedUser) {
+        alert("Você precisa estar logado para acessar o carrinho.");
+        window.location.href = "login-page.html";
+      }
 
+      const usersCartItems = JSON.parse(localStorage.getItem("usersCartItems")) || {};
+      const userKey = `${loggedUser.name}-${loggedUser.email}`;
+      let cartItems = usersCartItems[userKey] || [];
+
+
+
+      // Verifica se o carrinho está vazio e exibe uma mensagem apropriada
       function renderCartItems() {
         cartItemsContainer.innerHTML = '';
         if (cartItems.length === 0) {
@@ -115,26 +129,42 @@
             removeItemFromCart(parseInt(this.getAttribute('data-index')));
           });
         });
+        usersCartItems[userKey] = cartItems;
+        localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+
       }
 
       function removeItemFromCart(index) {
         if (index >= 0 && index < cartItems.length) {
-            cartItems.splice(index, 1);
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
-            renderCartItems();
+          cartItems.splice(index, 1);
+          usersCartItems[userKey] = cartItems;
+          localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+          renderCartItems();
         }
       }
 
-      const checkoutButton = document.getElementById('checkout-button');
-      if(checkoutButton) {
-        checkoutButton.addEventListener('click', function() {
-          if (cartItems.length > 0) {
-            alert('Obrigado por comprar!');
-          } else {
-            alert('Seu carrinho está vazio. Adicione produtos antes de finalizar!');
-          }
-        });
-      }
+    const checkoutButton = document.getElementById('checkout-button');
+    if (checkoutButton) {
+      checkoutButton.addEventListener('click', function () {
+        if (cartItems.length > 0) {
+          const usersBroughtItems = JSON.parse(localStorage.getItem("usersBroughtItems")) || {};
+          const currentBrought = usersBroughtItems[userKey] || [];
+          usersBroughtItems[userKey] = currentBrought.concat(cartItems);
+
+          // Limpa carrinho atual
+          cartItems = [];
+          usersCartItems[userKey] = [];
+
+          localStorage.setItem("usersBroughtItems", JSON.stringify(usersBroughtItems));
+          localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+          alert('Obrigado por comprar!');
+          renderCartItems();
+        } else {
+          alert('Seu carrinho está vazio. Adicione produtos antes de finalizar!');
+        }
+      });
+    }
+
 
       renderCartItems();
     });
