@@ -57,12 +57,8 @@
             <input type="text" class="form-control" id="product-name" required>
           </div>
           <div class="form-group">
-            <label for="product-short-description">Descrição Curta do Produto</label>
-            <textarea class="form-control" id="product-short-description" rows="2" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="product-long-description">Descrição Completa do Produto</label>
-            <textarea class="form-control" id="product-long-description" rows="3"></textarea>
+            <label for="product-short-description">Descrição do Produto</label>
+            <textarea class="form-control" id="product-description" rows="3" required></textarea>
           </div>
           <div class="form-group">
             <label for="product-price">Preço do Produto (R$)</label>
@@ -133,8 +129,7 @@
         const product = productsList[editIndex];
         if (product) {
           document.getElementById('product-name').value = product.name;
-          document.getElementById('product-short-description').value = product.shorDescription;
-          document.getElementById('product-long-description').value = product.longDescription;
+          document.getElementById('product-description').value = product.Description;
           document.getElementById('product-price').value = product.price;
           document.getElementById('product-category').value = product.category;
           document.getElementById('product-type').value = product.type || '';
@@ -148,7 +143,7 @@
       event.preventDefault();
 
       const name = document.getElementById('product-name').value;
-      const shortDescription = document.getElementById('product-short-description').value;
+      const Description = document.getElementById('product-description').value;
       const price = document.getElementById('product-price').value;
       const category = document.getElementById('product-category').value;
       const quantity = document.getElementById('product-quantity').value;
