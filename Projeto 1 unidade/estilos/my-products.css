@@ -121,6 +121,22 @@ main {
     box-shadow: 0 0 0 2px #D68500;
 }
 
+#user_name_display {
+    font-weight: bold;
+    margin-left: 10px;
+}
+#logoutButton {
+    background-color: #d68500;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
 @media (max-width: 600px) {
     .side-menu {
         display: none;

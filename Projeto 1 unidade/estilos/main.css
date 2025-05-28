@@ -34,27 +34,16 @@
     text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
   }
 
-  .searchbar {
-    display: flex;
-    gap: 10px;
+  #searchForm .btn {
+    color: #ffa500;
+    border-color: #ffa500;
+    background-color: transparent;
+    transition: all 0.3s ease;
   }
 
-  .searchbar input {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    width: 250px;
-  }
-
-  .searchbar button {
-    padding: 10px 20px;
-    background-color: #ffa500;
-    border: none;
-    border-radius: 5px;
+  #searchForm .btn:hover {
     color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #e59400;
   }
 
   .searchbar button:hover {
@@ -70,6 +59,7 @@
 
     .searchbar input {
       width: 80%;
+      margin-bottom: .5em;
     }
   }
 

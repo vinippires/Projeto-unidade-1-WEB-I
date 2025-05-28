@@ -20,15 +20,16 @@ if (!user && !window.location.pathname.endsWith('login-page.html') && !window.lo
                 <a href="../paginas/cart-page.html" id="cartIconLink" title="Carrinho" style="color: white; margin-right: 20px; text-decoration: none; display:flex; align-items:center;">
                     ${cartIconSvg}
                 </a>
-                <div class="hamburger-menu" style="position: relative;">
-                    <a href="#" id="hamburgerIconLink" title="Menu" style="color: white; text-decoration: none; display:flex; align-items:center;">
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         ${menuIconSvg}
-                    </a>
-                    <div class="dropdown-menu" style="display: none; position: absolute; right: 0; top: 40px; background-color: #205781; border: 1px solid #d68500; border-radius: 4px; z-index: 1000; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
-                        <a href="../paginas/my-products.html" style="display: block; padding: 10px 15px; color: white; text-decoration: none; font-size: 14px;">Meus Produtos</a>
-                        <a href="../paginas/user_profile_page.html" style="display: block; padding: 10px 15px; color: white; text-decoration: none; font-size: 14px;">Meu Perfil</a>
-                        <a href="#" id="logoutButtonHeader" onclick="logout()" style="display: block; padding: 10px 15px; color: #d68500; text-decoration: none; font-size: 14px;">Sair</a>
-                    </div>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="../paginas/my-products.html">Meus Produtos</a></li>
+                        <li><a class="dropdown-item" href="../paginas/user_profile_page.html">Meu Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutButtonHeader" onclick="logout()">Sair</a></li>
+                </ul>
                 </div>
             </div>`;
 
