@@ -29,6 +29,101 @@
     .spikebox {
         margin-top: auto;
     }
+    /* Carrinho estilo Mercado Livre */
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 20px 0;
+      padding-left: 30px;
+      padding-right: 30px;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #f5f5f5;
+    }
+    .cart-item-info {
+      flex: 2;
+      min-width: 200px;
+    }
+    .cart-item-title {
+      font-size: 1.1em;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+    .cart-item-actions {
+      margin-top: 8px;
+    }
+    .cart-action {
+      margin-right: 16px;
+      color: #205781;
+      font-size: 0.95em;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .cart-item-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      min-width: 120px;
+    }
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #205781;
+      font-size: 1.2em;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .qty-btn:hover {
+      background: #f0f0f0;
+    }
+    .cart-item-price {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #d68500;
+    }
+    .remove-item-btn {
+      background: none;
+      color: #e74c3c;
+      border: none;
+      padding: 0 8px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .remove-item-btn:hover {
+      color: #c0392b;
+      background: none;
+    }
+    @media (max-width: 700px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .cart-item-controls {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        min-width: unset;
+      }
+    }
   </style>
 </head>
 <body>
@@ -58,12 +153,11 @@
 
   <main class="cart-container">
     <h1 style="color: #205781; margin-bottom: 30px; text-align: center;">Meu Carrinho</h1>
-    <div id="cart-items-container">
-      </div>
+    <div id="cart-items-container"></div>
     <div id="cart-summary" style="margin-top: 30px;">
       <h2>Resumo do Pedido</h2>
       <p>Total: <strong id="cart-total" style="color: #d68500;">R$ 0.00</strong></p>
-      <button id="checkout-button">Finalizar Compra</button>
+      <button id="checkout-button" class="btn btn-primary">Finalizar Compra</button>
     </div>
   </main>
 
@@ -80,12 +174,11 @@
       </nav>
     </div>
   </div>
-
+  
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="../js/global.js"></script>
   <script>
-  
-
-
     document.addEventListener('DOMContentLoaded', function() {
       const cartItemsContainer = document.getElementById('cart-items-container');
       const cartTotalElement = document.getElementById('cart-total');
@@ -99,9 +192,6 @@
       const userKey = `${loggedUser.name}-${loggedUser.email}`;
       let cartItems = usersCartItems[userKey] || [];
 
-
-
-      // Verifica se o carrinho está vazio e exibe uma mensagem apropriada
       function renderCartItems() {
         cartItemsContainer.innerHTML = '';
         if (cartItems.length === 0) {
@@ -112,68 +202,103 @@
 
         let total = 0;
         cartItems.forEach((item, index) => {
+          const itemPrice = parseFloat(item.price);
+          const itemDesiredQuantity = parseInt(item.desiredQuantity || 1);
+
+          // Cria o elemento do item
           const itemElement = document.createElement('div');
           itemElement.classList.add('cart-item');
-          
-          const itemPrice = parseFloat(item.price);
-          const itemDesiredQuantity = parseInt(item.desiredQuantity || 1); 
+
+          // Placeholder para o nome do vendedor
+          let vendedorHTML = `<span id="vendedor-${index}">Carregando vendedor...</span>`;
 
           itemElement.innerHTML = `
             <img src="${item.image || 'https://placehold.co/100x100/png?text=Produto'}" alt="${item.name || 'Nome do Produto'}">
             <div class="cart-item-info">
-              <h3>${item.name || 'Produto sem nome'}</h3>
-              <p>Preço Unitário: R$ ${itemPrice.toFixed(2)}</p>
-              <p>Vendedor: ${item.creator || 'N/A'}</p>
+              <div class="cart-item-title">${item.name || 'Produto sem nome'}</div>
+              <div style="font-size:0.95em; color:#555;">Vendedor: ${vendedorHTML}</div>
+              <div style="font-size:0.95em; color:#888;">Até 12x sem juros</div>
+              <div class="cart-item-actions">
+                <a href="#" class="cart-action">Comprar agora</a>
+                <a href="#" class="cart-action">Salvar para depois</a>
+                <button class="remove-item-btn" data-index="${index}" title="Remover item">Excluir</button>
+              </div>
             </div>
-            <button class="remove-item-btn" data-index="${index}" title="Remover item">Remover</button>
+            <div class="cart-item-controls">
+              <div class="quantity-controls">
+                <button class="qty-btn" data-action="decrease" data-index="${index}">-</button>
+                <span class="cart-item-qty" id="qty-${index}">${itemDesiredQuantity}</span>
+                <button class="qty-btn" data-action="increase" data-index="${index}">+</button>
+              </div>
+              <div class="cart-item-price">R$ ${(itemPrice * itemDesiredQuantity).toFixed(2)}</div>
+            </div>
           `;
           cartItemsContainer.appendChild(itemElement);
-          total += itemPrice * itemDesiredQuantity;
+
+          // Busca o nome do vendedor no Firebase
+          if (item.owner) {
+            firebase.database().ref('users/' + item.owner).once('value').then(snap => {
+              const user = snap.val();
+              document.getElementById(`vendedor-${index}`).textContent = user && user.name ? user.name : 'N/A';
+            }).catch(() => {
+              document.getElementById(`vendedor-${index}`).textContent = 'N/A';
+            });
+          } else {
+            document.getElementById(`vendedor-${index}`).textContent = 'N/A';
+          }
         });
 
         if (cartTotalElement) cartTotalElement.textContent = `R$ ${total.toFixed(2)}`;
 
-        document.querySelectorAll('.remove-item-btn').forEach(button => {
-          button.addEventListener('click', function() {
-            removeItemFromCart(parseInt(this.getAttribute('data-index')));
+        // Eventos de quantidade
+        cartItemsContainer.querySelectorAll('.qty-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const idx = parseInt(this.getAttribute('data-index'));
+            if (this.getAttribute('data-action') === 'increase') {
+              cartItems[idx].desiredQuantity = (parseInt(cartItems[idx].desiredQuantity || 1) + 1);
+            } else if (this.getAttribute('data-action') === 'decrease') {
+              cartItems[idx].desiredQuantity = Math.max(1, parseInt(cartItems[idx].desiredQuantity || 1) - 1);
+            }
+            usersCartItems[userKey] = cartItems;
+            localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+            renderCartItems();
           });
         });
-        usersCartItems[userKey] = cartItems;
-        localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
 
+        // Evento de remover
+        cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const idx = parseInt(this.getAttribute('data-index'));
+            cartItems.splice(idx, 1);
+            usersCartItems[userKey] = cartItems;
+            localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+            renderCartItems();
+          });
+        });
       }
 
-      function removeItemFromCart(index) {
-        if (index >= 0 && index < cartItems.length) {
-          cartItems.splice(index, 1);
-          usersCartItems[userKey] = cartItems;
-          localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
-          renderCartItems();
-        }
+      const checkoutButton = document.getElementById('checkout-button');
+      if (checkoutButton) {
+        checkoutButton.addEventListener('click', function () {
+          if (cartItems.length > 0) {
+            const usersBroughtItems = JSON.parse(localStorage.getItem("usersBroughtItems")) || {};
+            const currentBrought = usersBroughtItems[userKey] || [];
+            usersBroughtItems[userKey] = currentBrought.concat(cartItems);
+
+            // Limpa carrinho atual
+            cartItems = [];
+            usersCartItems[userKey] = [];
+
+            localStorage.setItem("usersBroughtItems", JSON.stringify(usersBroughtItems));
+            localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
+            alert('Obrigado por comprar!');
+            renderCartItems();
+          } else {
+            alert('Seu carrinho está vazio. Adicione produtos antes de finalizar!');
+          }
+        });
       }
-
-    const checkoutButton = document.getElementById('checkout-button');
-    if (checkoutButton) {
-      checkoutButton.addEventListener('click', function () {
-        if (cartItems.length > 0) {
-          const usersBroughtItems = JSON.parse(localStorage.getItem("usersBroughtItems")) || {};
-          const currentBrought = usersBroughtItems[userKey] || [];
-          usersBroughtItems[userKey] = currentBrought.concat(cartItems);
-
-          // Limpa carrinho atual
-          cartItems = [];
-          usersCartItems[userKey] = [];
-
-          localStorage.setItem("usersBroughtItems", JSON.stringify(usersBroughtItems));
-          localStorage.setItem("usersCartItems", JSON.stringify(usersCartItems));
-          alert('Obrigado por comprar!');
-          renderCartItems();
-        } else {
-          alert('Seu carrinho está vazio. Adicione produtos antes de finalizar!');
-        }
-      });
-    }
-
 
       renderCartItems();
     });

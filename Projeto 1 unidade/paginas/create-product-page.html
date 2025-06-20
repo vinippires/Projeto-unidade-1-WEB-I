@@ -41,10 +41,7 @@
         </ul>
       </div>
     </nav>
-    <div class="login_register">
-      <a href="../paginas/login-page.html">Login</a>
-      <a href="../paginas/register-page.html">Registrar</a>
-    </div>
+    <div class="login_register"></div>
   </div>
 
   <div class="container my-5 py-5">
@@ -117,11 +114,10 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="../js/global.js"></script>
-
   <script>
-
-
     window.addEventListener('DOMContentLoaded', () => {
       const editIndex = localStorage.getItem('editProductIndex');
       if (editIndex !== null) {
@@ -139,9 +135,9 @@
       }
     });
 
-    document.getElementById('create-product-form').addEventListener('submit', function (event) {
+    document.getElementById('create-product-form').addEventListener('submit', async function (event) {
       event.preventDefault();
-
+      console.log("submit"); // Adicione esta linha
       const name = document.getElementById('product-name').value;
       const description = document.getElementById('product-description').value;
       const price = document.getElementById('product-price').value;
@@ -150,46 +146,42 @@
       const type = document.getElementById('product-type').value;
       const condition = document.getElementById('product-condition').value;
       const imageFile = document.getElementById('product-image').files[0];
-      const loggedUser = JSON.parse(localStorage.getItem('loggedUser')) || { name: "Desconhecido" };
-      const userData = JSON.parse(localStorage.getItem("userData")) || {};
-      const userKey = loggedUser.email;
-
-      const phone = userData[userKey] ? userData[userKey].phone : "Telefone não informado";
-      const cep = userData[userKey] ? userData[userKey].cep : "CEP não informado";
-      const address = userData[userKey] ? userData[userKey].address : "Endereço não informado";
-
-
-      const saveProduct = (imageBase64) => {
-        const newProduct = { creator: loggedUser.name, name, description, price: parseFloat(price), category, quantity,type,condition, image: imageBase64 , cep , address,phone};
-        let productsList = JSON.parse(localStorage.getItem('productsList')) || [];
-        const editIndex = localStorage.getItem('editProductIndex');
-
-        if (editIndex !== null) {
-          productsList[editIndex] = newProduct;
-          localStorage.removeItem('editProductIndex');
-        } else {
-          productsList.push(newProduct);
-        }
-
-        localStorage.setItem('productsList', JSON.stringify(productsList));
-        alert('Produto salvo com sucesso!');
-        window.location.href = 'my-products.html';
-      };
-
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.onload = e => saveProduct(e.target.result);
-        reader.readAsDataURL(imageFile);
-      } else {
-        const editIndex = localStorage.getItem('editProductIndex');
-        const productsList = JSON.parse(localStorage.getItem('productsList')) || [];
-        const product = editIndex !== null ? productsList[editIndex] : null;
-        if (product && product.image) {
-          saveProduct(product.image);
-        } else {
-          alert("Por favor, envie uma imagem.");
-        }
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+      if (!loggedUser) {
+        alert("Você precisa estar logado para cadastrar um produto.");
+        window.location.href = "login-page.html";
+        return;
       }
+
+      // Lê a imagem como base64
+      const getImageBase64 = file => new Promise((resolve, reject) => {
+        if (!file) return resolve("");
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const imageBase64 = await getImageBase64(imageFile);
+
+      // Salva no Firebase
+      const db = firebase.database();
+      const newProductRef = db.ref('products').push();
+      await newProductRef.set({
+        owner: loggedUser.email.replace(/\./g, "_"),
+        name,
+        description,
+        price: parseFloat(price),
+        category,
+        quantity,
+        type,
+        condition,
+        image: imageBase64,
+        createdAt: Date.now()
+      });
+
+      alert('Produto salvo com sucesso!');
+      window.location.href = 'my-products.html';
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"

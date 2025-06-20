@@ -33,33 +33,50 @@
         <div style="background-color: #205781;height: 100px ; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 40px 0;">
         </div>
     </div>
+  <!-- Add Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-  //clean up localStorage loggedUser
+  // Firebase configuration
+  const firebaseConfig = {
+    databaseURL: "https://projetoteste-2025-lostmdk-default-rtdb.firebaseio.com/"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // Limpa usuário logado anterior
   localStorage.removeItem("loggedUser");
-function login(){
-  localStorage.removeItem("loggedUser");//remove usuario já logado
 
-    const email = document.getElementById("email").value;
+  async function login() {
+    localStorage.removeItem("loggedUser"); // remove usuario já logado
+
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
-    const accountsList = JSON.parse(localStorage.getItem("accountsList")) || [];
 
-    const usuario = accountsList.find((usuario) => usuario.email === email && usuario.password === password);
-    if (usuario) {
+    // Firebase não aceita '.' em keys, então substituímos por '_'
+    const userKey = email.replace(/\./g, "_");
+
+    // Busca usuário no Firebase
+    const snapshot = await db.ref('users/' + userKey).get();
+    if (snapshot.exists()) {
+      const usuario = snapshot.val();
+      if (usuario.password === password) {
         alert("Login bem-sucedido!");
 
-        if(usuario.userImage === undefined){
-            usuario.userImage = "https://placehold.co/150x150/png?text=User+Image";
+        // Garante que userImage exista
+        if (!usuario.userImage) {
+          usuario.userImage = "https://placehold.co/150x150/png?text=User+Image";
         }
 
-        // salva usuario logado no localStorage
+        // Salva usuário logado no localStorage
         localStorage.setItem("loggedUser", JSON.stringify(usuario));
         window.location.href = "main-page.html";
-
-    } else {
-        alert("Email ou senha incorretos!");
+        return;
+      }
     }
+    alert("Email ou senha incorretos!");
   }
-
 </script>
 
 

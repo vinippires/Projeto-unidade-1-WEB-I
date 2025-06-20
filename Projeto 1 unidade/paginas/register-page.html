@@ -21,13 +21,13 @@
     <div class="Container" style="z-index: 10;">
       <div class="Login-Container">
         <h1>Register</h1>
-        <form action="main-page.html" method="post">
-            <input type="text" id="name" placeholder="Nome"   /><br>
-            <input type="email" id="email" placeholder="Email"  required /><br>
-            <input type="password" id="password" placeholder="Password" required /><br>
-            <input type="password" id="confirm-password" placeholder="Confirmar Password" required /><br>
-            <input type="submit" value="Registrar" id="Login-Button" onclick="saveOnAccountsList()"/>
-        </form>
+    <form id="registerForm" action="main-page.html" method="post">
+        <input type="text" id="name" placeholder="Nome" /><br>
+        <input type="email" id="email" placeholder="Email" required /><br>
+        <input type="password" id="password" placeholder="Password" required /><br>
+        <input type="password" id="confirm-password" placeholder="Confirmar Password" required /><br>
+        <input type="submit" value="Registrar" id="Login-Button"/>
+    </form>
         <a href="../paginas/login-page.html"> já possui uma conta?</a>
       </div>
     </div>
@@ -38,28 +38,61 @@
         </div>
     </div>
 </body>
+<!-- Add Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
+  // ...existing code...
+// Firebase configuration
+const firebaseConfig = {
+  databaseURL: "https://projetoteste-2025-lostmdk-default-rtdb.firebaseio.com/"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
 //save the form data to local storage
-function saveOnAccountsList() {
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+  async function registerUser(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
-    const placeholderImage = "https://placehold.co/150x150/png?text=User+Image";
-    const userImage = placeholderImage;
+    const userImage = "https://placehold.co/150x150/png?text=User+Image";
 
     if (password !== confirmPassword) {
-        alert("As senhas não coincidem!");
-        return;
-    }else if (name === "" || email === "" || password === "") {
-        alert("Preencha todos os campos!");
-        return;
+      alert("As senhas não coincidem!");
+      return;
+    } else if (name === "" || email === "" || password === "") {
+      alert("Preencha todos os campos!");
+      return;
     }
 
-    const accountsList = JSON.parse(localStorage.getItem("accountsList")) || [];
-    accountsList.push({ name, email, password, userImage });
-    localStorage.setItem("accountsList", JSON.stringify(accountsList));
-}
+    // Firebase não aceita '.' em keys, então substituímos por '_'
+    const userKey = email.replace(/\./g, "_");
 
+    // Verifica se o usuário já existe
+    const snapshot = await db.ref('users/' + userKey).get();
+    if (snapshot.exists()) {
+      alert("Este email já está cadastrado!");
+      return;
+    }
+
+    // Salva o usuário no Firebase
+    await db.ref('users/' + userKey).set({
+      name,
+      email,
+      password,
+      userImage
+    });
+
+    alert("Cadastro realizado com sucesso!");
+    window.location.href = "login-page.html";
+  }
+
+  // Adiciona o listener ao formulário
+  document.getElementById("registerForm").addEventListener("submit", registerUser);
 </script>
 </html>

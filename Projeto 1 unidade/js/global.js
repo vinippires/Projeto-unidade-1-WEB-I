@@ -1,4 +1,16 @@
 const user = JSON.parse(localStorage.getItem("loggedUser"));
+// Firebase configuration
+const firebaseConfig = {
+  databaseURL: "https://projetoteste-2025-lostmdk-default-rtdb.firebaseio.com/"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+async function getLoggedUser() {
+  const snapshot = await db.ref('loggedUser').get();
+  return snapshot.exists() ? snapshot.val() : null;
+}
 
 // Adiciona a verificação de estar na login-page.html antes de redirecionar
 if (!user && !window.location.pathname.endsWith('login-page.html') && !window.location.pathname.endsWith('register-page.html')) {
@@ -87,8 +99,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Função para fazer logout
-function logout() {
-    localStorage.removeItem("loggedUser");
-    window.location.href = "../paginas/login-page.html";
-}
+// Atualiza o cabeçalho dinâmico
+window.addEventListener('DOMContentLoaded', () => {
+  const loginRegisterDiv = document.querySelector('.login_register');
+  if (!loginRegisterDiv) return;
+  if (user) {
+    loginRegisterDiv.innerHTML = `
+      <div class="dropdown" style="display:inline-block;">
+        <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:white;">
+          <img src="${user.userImage || 'https://placehold.co/40x40/png'}" alt="User" style="width:32px;height:32px;border-radius:50%;">
+          <span id="user_name_display">${user.name || user.email}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+          <li><a class="dropdown-item" href="user_profile_page.html">Meu Perfil</a></li>
+          <li><a class="dropdown-item" href="my-products.html">Meus Produtos</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#" id="logout-link">Sair</a></li>
+        </ul>
+      </div>
+    `;
+    setTimeout(() => {
+      const logoutLink = document.getElementById('logout-link');
+      if (logoutLink) {
+        logoutLink.onclick = function() {
+          localStorage.removeItem('loggedUser');
+          window.location.href = 'login-page.html';
+        };
+      }
+    }, 100);
+  } else {
+    loginRegisterDiv.innerHTML = `
+      <a href="login-page.html">Login</a>
+      <a href="register-page.html">Registrar</a>
+    `;
+  }
+});

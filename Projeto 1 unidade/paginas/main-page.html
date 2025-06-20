@@ -76,137 +76,72 @@
       </nav>
     </div>
   </div>
-
+<!-- Add Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const container = document.getElementById("products-container");
+      container.innerHTML = "<p>Carregando produtos...</p>";
 
-      const placeholderProducts = [
-        {
-          name: "Smartphone Usado",
-          description: "Modelo antigo, mas funcionando",
-          price: 250,
-          category: "eletronicos",
-          creator: "Admin",
-          image: "https://placehold.co/150x150/png?text=Smartphone",
-          quantity: 1,
-          type: "Venda",
-          condition: "usado"
-        },
-        {
-          name: "Cadeira de Madeira",
-          description: "Bem conservada",
-          price: 150,
-          category: "moveis",
-          creator: "Admin",
-          image: "https://placehold.co/150x150/png?text=Cadeira",
-          quantity: 2,
-          type: "Venda",
-          condition: "usado"
-        },
-        {
-          name: "Camisa Azul",
-          description: "Tamanho M, pouco usada",
-          price: 40,
-          category: "roupas",
-          creator: "Admin",
-          image: "https://placehold.co/150x150/png?text=Camisa",
-          quantity: 3,
-          type: "Venda",
-          condition: "usado"
-        },
-        {
-          name: "Livro - Aventura",
-          description: "Leitura envolvente",
-          price: 30,
-          category: "livros",
-          creator: "Admin",
-          image: "https://placehold.co/150x150/png?text=Livro",
-          quantity: 5,
-          type: "Venda",
-          condition: "usado"
-        },
-        {
-          name: "Tênis de Corrida",
-          description: "Quase novo",
-          price: 120,
-          category: "esportes",
-          creator: "Admin",
-          image: "https://placehold.co/150x150/png?text=T%C3%AAnis",
-          quantity: 1,
-          type: "Venda",
-          condition: "usado"
-        },
-        {
-          name: "Fone de Ouvido",
-          description: "Bom estado",
-          price: 70,
-          category: "eletronicos",
-          creator: "Admin",
-          image: "https://placehold.co/150x150/png?text=Fone",
-          quantity: 4,
-          type: "Venda",
-          condition: "usado"
+      // Inicializa o Firebase (caso não esteja inicializado em outro lugar)
+      const db = firebase.database();
+      const productsRef = db.ref('products');
+
+      productsRef.once('value', snapshot => {
+        container.innerHTML = "";
+        const products = snapshot.val() || {};
+
+        // Agrupa por categoria
+        const grouped = {};
+        for (const id in products) {
+          const product = products[id];
+          const cat = product.category || "Outros";
+          if (!grouped[cat]) grouped[cat] = [];
+          grouped[cat].push({ ...product, id });
         }
-      ];
 
-      let productsList = JSON.parse(localStorage.getItem("productsList")) || [];
+        // Se não houver produtos
+        if (Object.keys(grouped).length === 0) {
+          container.innerHTML = "<p>Nenhum produto disponível.</p>";
+          return;
+        }
 
-      // Se houver menos de 6 produtos, completar com placeholders
-      if (productsList.length < 6) {
-        const needed = 6 - productsList.length;
-        // Adiciona apenas placeholders que ainda não existem na lista
-        const existingNames = new Set(productsList.map(p => p.name));
-        const toAdd = placeholderProducts.filter(p => !existingNames.has(p.name)).slice(0, needed);
-        productsList = productsList.concat(toAdd);
-        localStorage.setItem("productsList", JSON.stringify(productsList));
-      }
+        // Gera HTML por categoria
+        for (const category in grouped) {
+          const section = document.createElement("section");
+          section.innerHTML = `<h2 style="margin-top: 30px;">${capitalize(category)}</h2>`;
+          const list = document.createElement("div");
+          list.className = "product-list";
 
-      // Agrupar produtos por categoria
-      const grouped = {};
-      for (const product of productsList) {
-        const cat = product.category || "Outros";
-        if (!grouped[cat]) grouped[cat] = [];
-        grouped[cat].push(product);
-      }
+          grouped[category].forEach(product => {
+            const item = document.createElement("div");
+            item.className = "product-item";
+            item.innerHTML = `
+          <a href="../paginas/product-page.html" onclick='verProduto("${product.id}")'>
+            <img src="${product.image}" alt="${product.name}" 
+                onerror="this.onerror=null;this.src='https://placehold.co/150x150/png?text=Imagem+Indisponível';">
+            <h3>${product.name}</h3>
+            <p class="price">R$ ${parseFloat(product.price).toFixed(2)}</p>
+          </a>
+        `;
+            list.appendChild(item);
+          });
 
-      // Gerar HTML
-      for (const category in grouped) {
-        const section = document.createElement("section");
-        section.innerHTML = `<h2 style="margin-top: 30px;">${capitalize(category)}</h2>`;
-        const list = document.createElement("div");
-        list.className = "product-list";
+          section.appendChild(list);
+          container.appendChild(section);
+        }
 
-        grouped[category].forEach(product => {
-          const item = document.createElement("div");
-          item.className = "product-item";
-          item.innerHTML = `
-                        <a href="../paginas/product-page.html" onclick='verProduto(${JSON.stringify(product)})'>
-                        <img src="${product.image}" alt="${product.name}" 
-                            onerror="this.onerror=null;this.src='https://placehold.co/150x150/png?text=Imagem+Indisponível';">
-                        <h3>${product.name}</h3>
-                        <p class="price">R$ ${parseFloat(product.price).toFixed(2)}</p>
-                        </a>
-                    `;
-          list.appendChild(item);
-        });
-
-        section.appendChild(list);
-        container.appendChild(section);
-      }
-
-      function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-      }
+        function capitalize(str) {
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+      });
     });
 
-    function verProduto(produto) {
-      localStorage.setItem('selectedProduct', JSON.stringify(produto));
+    // Salva só o ID do produto selecionado
+    function verProduto(productId) {
+      localStorage.setItem('selectedProductId', productId);
     }
-
-
-
-
   </script>
 
 
